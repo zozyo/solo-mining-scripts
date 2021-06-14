@@ -181,7 +181,7 @@ start_phala_phost_debug()
 		exit 0
 	fi
 
-	local ipaddr=$(cat $basedir/config.json | jq -r '.ipaddr')
+	local ipaddr=$(cat c/config.json | jq -r '.ipaddr')
 	local mnemonic=$(cat $basedir/config.json | jq -r '.mnemonic')
 	if [ -z $ipaddr ] || [ -z "$mnemonic" ]; then
 		config_set_all
@@ -230,10 +230,7 @@ start()
 				start_phala_phost
 				;;
 			"")
-				start_phala_node
-				start_phala_pruntime
-				sleep 30
-				start_phala_phost
+				docker-compose -f $basedir/docker-compose.yml up -d
 				;;
 			*)
 				log_err "----------参数错误----------"

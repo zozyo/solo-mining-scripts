@@ -8,11 +8,11 @@ services:
    - "9944:9944"
    - "30333:30333"
   environment:
-   - NODE_NAME="phala-node"
+   - NODE_NAME=""
   volumes:
    - "$HOME/phala-node-data:/root/data"
  phala-pruntime:
-  image: swr.cn-east-3.myhuaweicloud.com/phala/phala-poc3-pruntime
+  image: swr.cn-east-3.myhuaweicloud.com/phala/phala-poc4-pruntime
   container_name: phala-pruntime
   ports:
    - "8000:8000"
@@ -24,13 +24,12 @@ services:
    - "/dev/sgx/enclave"
    - "/dev/sgx/provision"
  phala-phost:
-  image: swr.cn-east-3.myhuaweicloud.com/phala/phala-poc3-phost
+  image: swr.cn-east-3.myhuaweicloud.com/phala/phala-poc4-phost
   container_name: phala-phost
   environment:
-   - PRUNTIME_ENDPOINT
-   - PHALA_NODE_WS_ENDPOINT
-   - MNEMONIC
-   - EXTRA_OPTS
+   - PRUNTIME_ENDPOINT=""
+   - PHALA_NODE_WS_ENDPOINT=""
+   - MNEMONIC=""
   depends_on:
    - phala-node
    - phala-pruntime

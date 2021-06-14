@@ -23,7 +23,7 @@ config_set_all()
 	while [[ x"$node_name" =~ \ |\' ]]; do
 		read -p "节点名称不能包含空格，请重新输入：" node_name
 	done
-	sed -i "2c \\  \"nodename\" : \"$node_name\"," $basedir/config.json &>/dev/null
+	sed -i "11c\\   - NODE_NAME=\"$node_name\"" $basedir/docker-compose.yml &>/dev/null
 	log_success "设置节点名称为: '$node_name' 成功"
 	local ipaddr=""
 	read -p "输入你的IP地址: " ipaddr
@@ -32,7 +32,8 @@ config_set_all()
 		log_err "IP地址格式错误，或者为空"
 		exit 1
 	fi
-	sed -i "3c \\  \"ipaddr\" : \"$ipaddr\"," $basedir/config.json &>/dev/null
+	sed -i "30c\\   - PRUNTIME_ENDPOINT=\"http://$ipaddr:8000\"" $basedir/docker-compose.yml &>/dev/null
+	sed -i "31c\\   - PHALA_NODE_WS_ENDPOINT=\"ws://$ipaddr:9944\"" $basedir/docker-compose.yml &>/dev/null
 	log_success "设置IP地址为: '$ipaddr' 成功"
 
 	local mnemonic=""
@@ -42,7 +43,7 @@ config_set_all()
 		log_err "助记词不能为空"
 		exit 1
 	fi
-	sed -i "4c \\  \"mnemonic\" : \"$mnemonic\"" $basedir/config.json &>/dev/null
+	sed -i "32c\\   - MNEMONIC=\"$mnemonic\"" $basedir/docker-compose.yml &>/dev/null
 	log_success "设置助记词为: '$mnemonic' 成功"
 }
 
