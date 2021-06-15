@@ -11,6 +11,7 @@ services:
    - NODE_NAME=""
   volumes:
    - "$HOME/phala-node-data:/root/data"
+
  phala-pruntime:
   image: swr.cn-east-3.myhuaweicloud.com/phala/phala-poc4-pruntime
   container_name: phala-pruntime
@@ -21,17 +22,22 @@ services:
   depends_on:
    - phala-node
   devices:
-   - "/dev/sgx/enclave"
-   - "/dev/sgx/provision"
+   - "/dev/sgx/enclave:/dev/sgx/enclave"
+   - "/dev/sgx/provision:/dev/sgx/provision"
+
  phala-phost:
   image: swr.cn-east-3.myhuaweicloud.com/phala/phala-poc4-phost
   container_name: phala-phost
-  environment:
-   - PRUNTIME_ENDPOINT=""
-   - PHALA_NODE_WS_ENDPOINT=""
-   - MNEMONIC=""
   depends_on:
    - phala-node
    - phala-pruntime
-  restart: on-failure
+  restart: always
+  entrypoint: [
+      "/root/phost",
+      "--dev",
+      "--mnemonic=",
+      "--substrate-ws-endpoint=",
+      "--pruntime-endpoint=",
+    ]
+
   

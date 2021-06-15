@@ -32,8 +32,8 @@ config_set_all()
 		log_err "IP地址格式错误，或者为空"
 		exit 1
 	fi
-	sed -i "30c\\   - PRUNTIME_ENDPOINT=\"http://$ipaddr:8000\"" $basedir/docker-compose.yml &>/dev/null
-	sed -i "31c\\   - PHALA_NODE_WS_ENDPOINT=\"ws://$ipaddr:9944\"" $basedir/docker-compose.yml &>/dev/null
+	sed -i "39c\\      \"--substrate-ws-endpoint=ws://$ipaddr:9944\"," $basedir/docker-compose.yml &>/dev/null
+	sed -i "40c\\      \"--pruntime-endpoint=http://$ipaddr:8000\"," $basedir/docker-compose.yml &>/dev/null
 	log_success "设置IP地址为: '$ipaddr' 成功"
 
 	local mnemonic=""
@@ -43,7 +43,7 @@ config_set_all()
 		log_err "助记词不能为空"
 		exit 1
 	fi
-	sed -i "32c\\   - MNEMONIC=\"$mnemonic\"" $basedir/docker-compose.yml &>/dev/null
+	sed -i "38c\\      \"--mnemonic=$mnemonic\"," $basedir/docker-compose.yml &>/dev/null
 	log_success "设置助记词为: '$mnemonic' 成功"
 }
 
