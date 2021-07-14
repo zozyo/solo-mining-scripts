@@ -86,3 +86,9 @@ update()
 			log_err "----------参数错误----------"
 	esac
 }
+
+if [ x"phala version" != x"$(curl https://raw.githubusercontent.com/Phala-Network/solo-mining-scripts/score-test/config.json | jq -r '.version')" ]; then 
+	update_script
+	phala $@
+	exit 0
+fi
