@@ -25,16 +25,8 @@ config_set_all()
 	done
 	sed -i "11c\\   - NODE_NAME=\"$node_name\"" $basedir/docker-compose.yml &>/dev/null
 	log_success "设置节点名称为: '$node_name' 成功"
-	local ipaddr=""
-	read -p "输入你的IP地址: " ipaddr
-	ipaddr=`echo "$ipaddr"`
-	if [ x"$ipaddr" == x"" ] || [ `echo $ipaddr | awk -F . '{print NF}'` -ne 4 ]; then
-		log_err "IP地址格式错误，或者为空"
-		exit 1
-	fi
-	sed -i "39c\\      \"--substrate-ws-endpoint=ws://$ipaddr:9944\"," $basedir/docker-compose.yml &>/dev/null
-	sed -i "40c\\      \"--pruntime-endpoint=http://$ipaddr:8000\"," $basedir/docker-compose.yml &>/dev/null
-	log_success "设置IP地址为: '$ipaddr' 成功"
+	sed -i "39c\\      \"--substrate-ws-endpoint=ws://0.0.0.0:9944\"," $basedir/docker-compose.yml &>/dev/null
+	sed -i "40c\\      \"--pruntime-endpoint=http://0.0.0.0:8000\"," $basedir/docker-compose.yml &>/dev/null
 
 	local mnemonic=""
 	read -p "输入你的Controllor账号助记词 : " mnemonic
