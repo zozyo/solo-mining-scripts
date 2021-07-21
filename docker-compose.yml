@@ -1,19 +1,19 @@
 version: "3.9"
 services:
  phala-node:
-  image: swr.cn-east-3.myhuaweicloud.com/phala/phala-poc4-node
+  image: ${NODEIMAGE}
   container_name: phala-node
   ports:
    - "9933:9933"
    - "9944:9944"
    - "30333:30333"
   environment:
-   - NODE_NAME=""
-  volumes:
+   - NODE_NAME=${MNEMONIC}
+     volumes:
    - "$HOME/phala-node-data:/root/data"
 
  phala-pruntime:
-  image: swr.cn-east-3.myhuaweicloud.com/phala/phala-poc4-pruntime
+  image: ${PRUNTIMEIMAGE}
   container_name: phala-pruntime
   ports:
    - "8000:8000"
@@ -21,12 +21,10 @@ services:
    - "$HOME/phala-pruntime-data:/root/data"
   depends_on:
    - phala-node
-  devices:
-   - "/dev/sgx/enclave:/dev/sgx/enclave"
-   - "/dev/sgx/provision:/dev/sgx/provision"
+  devices:${SGXDRIVE}
 
  phala-phost:
-  image: swr.cn-east-3.myhuaweicloud.com/phala/phala-poc4-phost
+  image: ${PHOSTIMAGE}
   container_name: phala-phost
   depends_on:
    - phala-node
@@ -35,9 +33,10 @@ services:
   entrypoint: [
       "/root/phost",
       "--dev",
-      "--mnemonic=",
-      "--substrate-ws-endpoint=",
-      "--pruntime-endpoint=",
+      "--mnemonic=${MNEMONIC}",
+      "--substrate-ws-endpoint=ws://phala-node:9944",
+      "--pruntime-endpoint=ws://phala-pruntime:8000",
+      "--operator ${OPERATOR}"
     ]
 
   
