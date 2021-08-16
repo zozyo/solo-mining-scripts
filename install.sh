@@ -35,6 +35,27 @@ install_cn()
 	echo "------------安装成功-------------"
 }
 
+install_no()
+{
+	echo "--------------安装 phala 脚本程序-------------"
+
+	if [ -L /usr/bin/phala ]; then
+		echo "删除旧的 Phala 脚本"
+		phala uninstall
+	fi
+	echo "安装新的 Phala 脚本"
+	mkdir -p $installdir
+	cp $basedir/{.env,docker-compose.yml.no,/console.js} $installdir/
+	cp -r $basedir/scripts/no $installdir/scripts
+	mv $installdir/docker-compose.yml.no $installdir/docker-compose.yml
+
+	echo "安装 Phala 命令行工具"
+	chmod +x $installdir/scripts/phala.sh
+	ln -s $installdir/scripts/phala.sh /usr/bin/phala
+
+	echo "------------安装成功-------------"
+}
+
 install_en()
 {
 	echo "--------------Install phala scripts-------------"
@@ -68,6 +89,8 @@ case "$1" in
 	"en")
 		install_en
 		;;
+	"no")
+		install_no
 	*)
 		help
 		;;
