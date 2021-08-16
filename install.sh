@@ -91,6 +91,7 @@ case "$1" in
 		;;
 	"no")
 		install_no
+		;;
 	*)
 		help
 		;;
