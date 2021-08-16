@@ -73,7 +73,7 @@ status()
 --------------------------------------------------------------------------
 	phala-node		${node_status}			${node_block}
 	phala-pruntime		${pruntime_status}
-	phala-pherry		${pherry_status}
+	phala-pherry		${pherry_status}			${blocknum}
 --------------------------------------------------------------------------
 	账户信息		内容
 --------------------------------------------------------------------------
@@ -82,13 +82,17 @@ status()
 	GAS费账户地址      	${gas_address}
 	GAS费账户余额      	\E[1;32m${balance}\E[0m
 	抵押池账户地址      	${pool_address}
-	矿工公钥	${publickey}
-	矿工区块高度	${blocknum}
-	矿工注册状态	${registered}
-	矿工评分	${score}
+	矿工公钥		${publickey}
+	矿工注册状态		${registered}
+	矿工评分		${score}
 --------------------------------------------------------------------------
 "
 		fi
-		sleep 10
+	for i in `seq 0 9`
+	do
+		printf "$i "
+		sleep 1
 	done
+	printf " 刷新中..."
+    done
 }
