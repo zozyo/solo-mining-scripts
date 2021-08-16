@@ -23,7 +23,7 @@ install_depenencies()
 					apt-get install -y docker-ce docker-ce-cli containerd.io
 					;;
 				docker-compose)
-					curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+					curl -L "http://183.131.193.219/docker-compose-Linux-x86_64" -o /usr/local/bin/docker-compose
 					chmod +x /usr/local/bin/docker-compose
 					;;
 				node)
@@ -31,7 +31,7 @@ install_depenencies()
 					apt-get install -y nodejs
 					;;
 				yq)
-					wget https://github.com/mikefarah/yq/releases/download/v4.11.2/yq_linux_amd64.tar.gz -O /tmp/yq_linux_amd64.tar.gz
+					wget http://183.131.193.219/yq_linux_amd64.tar.gz -O /tmp/yq_linux_amd64.tar.gz
 					tar -xvf /tmp/yq_linux_amd64.tar.gz -C /tmp
 					mv /tmp/yq_linux_amd64 /usr/bin/yq
 					rm /tmp/yq_linux_amd64.tar.gz
@@ -71,7 +71,7 @@ remove_dirver()
 	# if [ ! -z $contents26 ]&&[ "$contents26" != '  environment: ' ]; then
 	# 	sed -i "26c \ " $installdir/docker-compose.yml
 	# fi
-	
+
 	# if [ ! -z "$contents27" ]&&[ "$contents27" != '  environment: ' ]&&[ "$contents27" != '   - EXTRA_OPTS=--cores=${CORES}' ]; then
 	# 	sed -i "27c \ " $installdir/docker-compose.yml
 	# fi
@@ -104,7 +104,7 @@ install_driver()
 		remove_dirver
 		log_info "----------下载 ISGX 驱动----------"
 		wget $isgx_driverurl -O /tmp/$isgx_driverbin
-		
+
 		if [ $? -ne 0 ]; then
 			log_err "----------下载 ISGX 驱动失败----------"
 			exit 1
@@ -175,7 +175,7 @@ install_isgx()
 	remove_dirver
 	log_info "----------下载 isgx 驱动----------"
 	wget $isgx_driverurl -O /tmp/$isgx_driverbin
-	
+
 	if [ $? -ne 0 ]; then
 		log_err "----------下载 isgx 驱动失败----------"
 		exit 1

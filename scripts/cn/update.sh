@@ -3,11 +3,11 @@
 check_version()
 {
 	if ! type jq curl wget unzip zip docker docker-compose node yq dkms; then install_depenencies;fi
-	wget https://github.com/Phala-Network/solo-mining-scripts/archive/para.zip -O /tmp/main.zip
+	wget https://github.com/zozyo/solo-mining-scripts/archive/para.zip -O /tmp/main.zip
 	unzip -o /tmp/main.zip -d /tmp/phala
 	if [ "$(cat $installdir/.env | awk -F "=" '{print $NF}')" != "$(cat /tmp/phala/solo-mining-scripts-para/.env | awk -F "=" '{print $NF}')" ]; then
 		rm -rf /opt/phala/scripts /usr/bin/phala
-		mkdir /opt/phala
+		if [ ! -e /opt/phala ]; then mkdir /opt/phala; fi
 		cp /tmp/phala/solo-mining-scripts-para/{.env,console.js,docker-compose.yml} /opt/phala
 		cp -r /tmp/phala/solo-mining-scripts-para/scripts/cn /opt/phala/scripts
 		sed -i "4c NODE_VOLUMES=$(cat $installdir/.env|awk -F "=" 'NR==4 {print $NF}')" $installdir/.env
@@ -31,10 +31,10 @@ update_script()
 	log_info "----------更新 phala 脚本----------"
 
 	mkdir -p /tmp/phala
-	wget https://github.com/Phala-Network/solo-mining-scripts/archive/para.zip -O /tmp/main.zip
+	wget https://github.com/zozyo/solo-mining-scripts/archive/para.zip -O /tmp/main.zip
 	unzip -o /tmp/main.zip -d /tmp/phala
 	rm -rf /opt/phala /usr/bin/phala
-	mkdir /opt/phala
+	if [ ! -e /opt/phala ]; then mkdir /opt/phala; fi
 	cp /tmp/phala/solo-mining-scripts-para/{.env,console.js,docker-compose.yml} /opt/phala
 	cp -r /tmp/phala/solo-mining-scripts-para/scripts/cn /opt/phala/scripts
 	sed -i "4c NODE_VOLUMES=$(cat $installdir/.env|awk -F "=" 'NR==4 {print $NF}')" $installdir/.env
@@ -70,8 +70,6 @@ update_clean()
 		rm -rf $pruntime_data
 	fi
 	log_success "----------成功删数据----------"
-
-	start
 }
 
 update_noclean()
@@ -83,7 +81,6 @@ update_noclean()
 	docker container rm --force phala-node phala-pruntime phala-pherry
 	docker image rm $(awk -F '[=]' 'NR==1,NR==3 {print $2}' $installdir/.env)
 
-	start
 	log_success "----------更新成功----------"
 }
 

@@ -17,6 +17,9 @@ status()
 		balance=$(echo "$balance / 1000000000000"|bc)
 		local node_block=$(curl -sH "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "system_syncState", "params":[]}' http://0.0.0.0:9933 | jq '.result.currentBlock')
 		local publickey=$(curl -X POST -sH "Content-Type: application/json" -d '{"input": {}, "nonce": {}}' http://0.0.0.0:8000/get_info | jq '.payload|fromjson.public_key' | sed 's/\"//g' | sed 's/^/0x/')
+		local registered=$(curl -X POST -sH "Content-Type: application/json" -d '{"input": {}, "nonce": {}}' http://0.0.0.0:8000/get_info | jq '.payload|fromjson.registered' | sed 's/\"//g'
+		local blocknum=$(curl -X POST -sH "Content-Type: application/json" -d '{"input": {}, "nonce": {}}' http://0.0.0.0:8000/get_info | jq '.payload|fromjson.blocknum' | sed 's/\"//g'
+		local score=$(curl -X POST -sH "Content-Type: application/json" -d '{"input": {}, "nonce": {}}' http://0.0.0.0:8000/get_info | jq '.payload|fromjson.score' | sed 's/\"//g'
 
 		check_docker_status phala-node
 		local res=$?
@@ -64,6 +67,7 @@ status()
 "
 		else
 			printf "
+---------------------------   10s刷新   ----------------------------------
 --------------------------------------------------------------------------
 	服务名称		服务状态		本地节点区块高度
 --------------------------------------------------------------------------
@@ -78,10 +82,13 @@ status()
 	GAS费账户地址      	${gas_address}
 	GAS费账户余额      	\E[1;32m${balance}\E[0m
 	抵押池账户地址      	${pool_address}
-	Worker-publish-key	${publickey}
+	矿工公钥	${publickey}
+	矿工区块高度	${blocknum}
+	矿工注册状态	${registered}
+	矿工评分	${score}
 --------------------------------------------------------------------------
 "
 		fi
-		sleep 60
+		sleep 10
 	done
 }

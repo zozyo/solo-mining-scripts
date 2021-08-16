@@ -19,7 +19,7 @@ config_set_all()
 {
 	local cores
 	while true ; do
-		read -p "您使用几个核心参与挖矿: " cores
+		cores=8
 		expr $cores + 0 &> /dev/null
 		if [ $? -eq 0 ] && [ $cores -ge 1 ] && [ $cores -le 32 ]; then
 			sed -i "6c CORES=$cores" $installdir/.env
@@ -31,7 +31,7 @@ config_set_all()
 
 	local node_name
 	while true ; do
-		read -p "请输入节点名称（不能包含空格）: " node_name
+		node_name=jyjf
 		if [[ $node_name =~ \ |\' ]]; then
 			printf "节点名称不能包含空格，请重新输入!\n"
 		else
@@ -44,7 +44,7 @@ config_set_all()
 	local gas_adress=""
 	local balance=""
 	while true ; do
-		read -p "输入你的GAS费账号助记词 : " mnemonic
+		read -p "Enter your gas account mnemonic: " mnemonic
 		if [ -z "$mnemonic" ] || [ $(node $installdir/console.js verify "$mnemonic") == "Cannot decode the input" ]; then
 			printf "请输入合法助记词,且不能为空！\n"
 		else
@@ -64,7 +64,7 @@ config_set_all()
 
 	local pool_addr=""
 	while true ; do
-		read -p "输入抵押池账户地址 : " pool_addr
+		pool_addr=45Kio9yJDLyWX5yUc2QmKo4RR42oT6YvDWB6tv2HFq1fPByd
 		if [ -z "$pool_addr" ] || [ $(node $installdir/console.js verify "$pool_addr") == "Cannot decode the input" ]; then
 			printf "请输入合法抵押池账户地址，且不能为空！\n"
 		else
