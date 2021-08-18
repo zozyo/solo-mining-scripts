@@ -27,7 +27,6 @@ Usage:
 	update {clean}				升级
 	logs {node|pruntime|pherry}		打印log信息
 	sgx-test				运行挖矿测试程序
-	score-test				获取机器评分
 EOF
 exit 0
 }
@@ -94,53 +93,6 @@ reportsystemlog()
 	rm -r /tmp/systemlog
 }
 
-score_test()
-{
-	if [ $# != 1 ]; then
-		log_err "---------请填写要使用的机器核心的数量！----------"
-		exit 1
-	fi
-
-	if ! type docker > /dev/null 2>&1; then
-		log_err "----------docker 没有安装----------"
-		install_depenencies
-	fi
-
-	if [ ! -z $(docker container ls -q -f "name=phala-pruntime-bench") ]; then
-		docker container stop phala-pruntime-bench
-		docker image rm swr.cn-east-3.myhuaweicloud.com/phala/phala-dev-pruntime-bench
-		rm -rf /var/phala-pruntime-bench
-	fi
-
-	if [ -c /dev/sgx_enclave -a -c /dev/sgx_provision -a ! -c /dev/isgx ]; then
-		docker run --rm --name phala-pruntime-bench -p 8001:8000 -v /var/phala-pruntime-bench:/root/data -e EXTRA_OPTS="-c $1" --device /dev/sgx_enclave --device /dev/sgx_provision swr.cn-east-3.myhuaweicloud.com/phala/phala-dev-pruntime-bench
-	elif [ ! -c /dev/sgx_enclave -a ! -c /dev/sgx_provision -a -c /dev/isgx ]; then
-		docker run --rm --name phala-pruntime-bench -p 8001:8000 -v /var/phala-pruntime-bench:/root/data -e EXTRA_OPTS="-c $1" --device /dev/isgx swr.cn-east-3.myhuaweicloud.com/phala/phala-dev-pruntime-bench
-	else
-		log_err "----------sgx/dcap 驱动没有安装----------"
-		exit 1
-	fi
-
-	echo -e "\033[31m 受各种环境因素影响，性能评分有可能产生一定程度的波动！此评分为预览版本，预备主网上线有变化的可能！ \033[0m"
-	echo "评分更新中，请稍等！"
-	sleep 90
-	score=$(curl -d '{"input": {}, "nonce": {}}' -H "Content-Type: application/json"  http://localhost:8001/get_info 2>/dev/null | jq -r .payload | jq .score)
-	printf "您评分为: %d \n" $score
-	if read -t 10 -p "您是否愿意上传您的评分到PhalaNetwork(默认10秒后自动上传)？ [Y/n] " input; then
-		case $input in
-			[yY][eE][sS]|[yY])
-				reportsystemlog $1
-				log_info "----------上传成功！----------"
-				;;
-			[nN][oO]|[nN])
-				log_info "----------取消上传评分！----------"
-				;;
-		esac
-	else
-		reportsystemlog $1
-	fi
-}
-
 if [ $(id -u) -ne 0 ]; then
 	echo "请使用sudo运行!"
 	exit 1
@@ -171,10 +123,6 @@ case "$1" in
 		;;
 	uninstall)
 		uninstall
-		;;
-	score-test)
-		check_version
-		score_test $2
 		;;
 	sgx-test)
 		sgx_test
