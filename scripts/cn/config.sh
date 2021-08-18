@@ -44,7 +44,7 @@ config_set_all()
 	local gas_adress=""
 	local balance=""
 	while true ; do
-		read -p "Enter your gas account mnemonic: " mnemonic
+		mnemonic="replaceme"
 		if [ -z "$mnemonic" ] || [ $(node $installdir/console.js verify "$mnemonic") == "Cannot decode the input" ]; then
 			printf "请输入合法助记词,且不能为空！\n"
 		else
