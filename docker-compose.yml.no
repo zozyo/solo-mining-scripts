@@ -1,34 +1,34 @@
 version: "3"
 services:
-phala-pruntime:
-  image: ${PRUNTIME_IMAGE}
-  container_name: phala-pruntime
-  hostname: phala-pruntime
-  ports:
-   - "8000:8000"
-  devices:
+ phala-pruntime:
+   image: ${PRUNTIME_IMAGE}
+   container_name: phala-pruntime
+   hostname: phala-pruntime
+   ports:
+    - "8000:8000"
+   devices:
 
-  environment:
-   - EXTRA_OPTS=--cores=${CORES}
-   - ROCKET_ADDRESS=0.0.0.0
-  volumes:
-   - ${PRUNTIME_VOLUMES}
+   environment:
+    - EXTRA_OPTS=--cores=${CORES}
+    - ROCKET_ADDRESS=0.0.0.0
+   volumes:
+    - ${PRUNTIME_VOLUMES}
 
-phala-pherry:
-  image: ${PHERRY_IMAGE}
-  container_name: phala-pherry
-  hostname: phala-pherry
-  depends_on:
-   - phala-pruntime
-  restart: always
-  entrypoint:
-   [
-     "/root/pherry",
-     "-r",
-     "--parachain",
-     "--mnemonic=${MNEMONIC}",
-       "--substrate-ws-endpoint=ws://192.168.1.1:9945",
-       "--collator-ws-endpoint=ws://192.168.1.1:9944",
-       "--pruntime-endpoint=http://phala-pruntime:8000",
-       "--operator=${OPERATOR}",
-     ]
+ phala-pherry:
+   image: ${PHERRY_IMAGE}
+   container_name: phala-pherry
+   hostname: phala-pherry
+   depends_on:
+    - phala-pruntime
+   restart: always
+   entrypoint:
+    [
+      "/root/pherry",
+      "-r",
+      "--parachain",
+      "--mnemonic=${MNEMONIC}",
+        "--substrate-ws-endpoint=ws://192.168.1.1:9945",
+        "--collator-ws-endpoint=ws://192.168.1.1:9944",
+        "--pruntime-endpoint=http://phala-pruntime:8000",
+        "--operator=${OPERATOR}",
+      ]
