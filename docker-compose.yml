@@ -45,8 +45,8 @@ services:
       "-r",
       "--parachain",
       "--mnemonic=${MNEMONIC}",
-      "--substrate-ws-endpoint=ws://192.168.1.1:9945",
-      "--collator-ws-endpoint=ws://192.168.1.1:9944",
+      "--substrate-ws-endpoint=ws://node.phala.asia:9945",
+      "--collator-ws-endpoint=ws://node.phala.asia:9944",
       "--pruntime-endpoint=http://phala-pruntime:8000",
       "--operator=${OPERATOR}",
      ]
