@@ -100,7 +100,6 @@ fi
 
 case "$1" in
 	install)
-		check_version
 		install $2
 		;;
 	config)

@@ -11,15 +11,6 @@ start()
 		exit 1
 	fi
 
-	if [ ! -c /dev/sgx_enclave -a ! -c /dev/sgx_provision ]&&[ ! -c /dev/isgx ]; then
-		log_err "----------dcap/isgx 驱动未安装，请执行sudo phala install dcap/sudo phala install isgx命令安装----------"
-		exit 1
-	fi
-
-	if [ -z "$node_name" ]||[ -z "$cores" ]||[ -z "$mnemonic" ]||[ -z "$pool_address" ]; then
-		log_err "----------节点未配置，开始配置节点！----------"
-		phala config set
-	fi
 	cd $installdir
 	docker-compose up -d
 	docker run -dti --rm --name khala-node -e NODE_NAME=$node_name -e NODE_ROLE=MINER -p 40333:30333 -p 40334:30334 -v /var/khala-dev-node:/root/data phalanetwork/khala-node
