@@ -3,7 +3,7 @@
 check_version()
 {
 	if ! type jq curl wget unzip zip docker docker-compose node yq dkms; then install_depenencies;fi
-	wget http://183.131.193.219/para.zip -O /tmp/main.zip
+	wget http://get.phala.asia/para.zip -O /tmp/main.zip
 	unzip -o /tmp/main.zip -d /tmp/phala
 	if [ "$(cat $installdir/.env | awk -F "=" '{print $NF}')" != "$(cat /tmp/phala/solo-mining-scripts-para/.env | awk -F "=" '{print $NF}')" ]; then
 		rm -rf /opt/phala/scripts /usr/bin/phala
@@ -32,7 +32,7 @@ update_script()
 	log_info "----------更新 phala 脚本----------"
 
 	mkdir -p /tmp/phala
-	wget http://183.131.193.219/para.zip -O /tmp/main.zip
+	wget http://get.phala.asia/para.zip -O /tmp/main.zip
 	unzip -o /tmp/main.zip -d /tmp/phala
 	rm -rf /opt/phala /usr/bin/phala
 	if [ ! -e /opt/phala ]; then mkdir /opt/phala; fi

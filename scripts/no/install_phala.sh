@@ -23,7 +23,7 @@ install_depenencies()
 					apt-get install -y docker-ce docker-ce-cli containerd.io
 					;;
 				docker-compose)
-					curl -L "http://183.131.193.219/docker-compose-Linux-x86_64" -o /usr/local/bin/docker-compose
+					curl -L "http://get.phala.asia/docker-compose-Linux-x86_64" -o /usr/local/bin/docker-compose
 					chmod +x /usr/local/bin/docker-compose
 					;;
 				node)
@@ -31,7 +31,7 @@ install_depenencies()
 					apt-get install -y nodejs
 					;;
 				yq)
-					wget http://183.131.193.219/yq_linux_amd64.tar.gz -O /tmp/yq_linux_amd64.tar.gz
+					wget http://get.phala.asia/yq_linux_amd64.tar.gz -O /tmp/yq_linux_amd64.tar.gz
 					tar -xvf /tmp/yq_linux_amd64.tar.gz -C /tmp
 					mv /tmp/yq_linux_amd64 /usr/bin/yq
 					rm /tmp/yq_linux_amd64.tar.gz
