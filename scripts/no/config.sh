@@ -45,13 +45,13 @@ config_set_all()
 	local balance=""
 	while true ; do
 		mnemonic="replaceme"
-		if [ -z "$mnemonic" ] || [ $(node $installdir/console.js verify "$mnemonic") == "Cannot decode the input" ]; then
+		if [ -z "$mnemonic" ] || [ $(node $installdir/console.js utils verify "$mnemonic") == "Cannot decode the input" ]; then
 			printf "请输入合法助记词,且不能为空！\n"
 		else
-			gas_adress=$(node $installdir/console.js verify "$mnemonic")
-			balance=$(node $installdir/console.js --substrate-ws-endpoint "wss://para1-api.phala.network/ws/" free-balance $gas_adress 2>&1)
+			gas_adress=$(node $installdir/console.js utils verify "$mnemonic")
+			balance=$(node $installdir/console.js --substrate-ws-endpoint "wss://para2-api.phala.network/ws/" chain free-balance $gas_adress 2>&1)
 			balance=$(echo $balance | awk -F " " '{print $NF}')
-			balance=$(echo "${balance##*WorkerStat} / 1000000000000"|bc)
+			balance=$(echo "$balance / 1000000000000"|bc)
 			if [ $(echo "$balance > 0.1"|bc) -eq 1 ]; then
 				sed -i "8c MNEMONIC=$mnemonic" $installdir/.env
 				sed -i "9c GAS_ACCOUNT_ADDRESS=$gas_adress" $installdir/.env
@@ -65,7 +65,7 @@ config_set_all()
 	local pool_addr=""
 	while true ; do
 		pool_addr=45Kio9yJDLyWX5yUc2QmKo4RR42oT6YvDWB6tv2HFq1fPByd
-		if [ -z "$pool_addr" ] || [ $(node $installdir/console.js verify "$pool_addr") == "Cannot decode the input" ]; then
+		if [ -z "$pool_addr" ] || [ $(node $installdir/console.js utils verify "$pool_addr") == "Cannot decode the input" ]; then
 			printf "请输入合法抵押池账户地址，且不能为空！\n"
 		else
 			sed -i "10c OPERATOR=$pool_addr" $installdir/.env
