@@ -58,6 +58,7 @@ config_set_all()
 				break
 			else
 				printf "账户PHA小于0.1，请重新输入！\n"
+				break
 			fi
 		fi
 	done
