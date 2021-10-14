@@ -17,7 +17,7 @@ function uninstall()
 					if [ -d $(awk -F '[=:]' 'NR==5 {print $2}' $installdir/.env) ]; then rm -rf $(awk -F '[=:]' 'NR==5 {print $2}' $installdir/.env);fi
 					;;
 				phala-pherry)
-					docker image rm $(awk -F "=" 'NR==3 {print $2}' $installdir/.env) 
+					docker image rm $(awk -F "=" 'NR==3 {print $2}' $installdir/.env)
 					;;
 				phala-sgx_detect)
 					docker image rm swr.cn-east-3.myhuaweicloud.com/phala/phala-sgx_detect:latest
@@ -27,9 +27,9 @@ function uninstall()
 			esac
 		fi
 	done
-	remove_dirver
+	remove_driver
 	rm -rf $installdir/{scripts,docker-compose.yml,console.js}
 	rm /usr/bin/phala
 
-	log_success "---------------删除 phala 挖矿套件成功---------------"
+	log_success $(sed -n '53,p;54q' $language_file)
 }

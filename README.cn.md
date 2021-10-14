@@ -24,7 +24,7 @@ sudo reboot
 
 ```bash
 chmod +x install.sh
-sudo ./install.sh cn
+sudo ./install.sh
 ```
 
 #### 三、使用方法
@@ -32,7 +32,7 @@ sudo ./install.sh cn
 ##### 3.1 安装部署
 
 ```bash
-sudo phala install init
+sudo phala install
 ```
 
 之后会要求配置节点名字、用户本地IP地址、controllor账户助记词
@@ -115,18 +115,11 @@ sudo phala install
 sudo phala sgx-test
 ```
 
-##### 3.9 获取主板得分
-- 安装phala命令后执行以下命令，注意：核心数量根据主板情况而定
-
-```bash
-sudo phala score_test [需要使用的核心数量]
-```
-
 #### 四、最简安装步骤
 
 一台全新矿机配置步骤
 
 1.运行sgx_enable软件开启SGX功能程序，然后重启
 2.重启后依据安装手册，安装phala脚本
-3.使用sudo phala install init命令部署挖矿程序，期间会配置你的节点名字、IP地址、controllor账户的助记词，配置结束后会等待一段时间
+3.使用sudo phala install 命令部署挖矿程序，期间会配置你的节点名字、IP地址、controllor账户的助记词，配置结束后会等待一段时间
 4.使用sudo phala start命令启动挖矿程序，挖矿程序启动结束后可以进行链上操作了

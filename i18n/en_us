@@ -1,0 +1,11 @@
+--------------Install phala scripts-------------
+Uninstall old phala scripts
+Install new phala scripts
+Install phala command line tool
+------------Install success-------------
+Please select the installation mode
+1. Node Only
+2. Miner Only
+3. Both
+ERROR, please re-enter
+Please run with sudo!

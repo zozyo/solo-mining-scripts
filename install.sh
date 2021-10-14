@@ -3,74 +3,65 @@
 basedir=$(cd `dirname $0`;pwd)
 scriptdir=$basedir/scripts
 installdir=/opt/phala
+language_file=/tmp/language
+install_mode="0"
 
-help()
+select_language()
 {
-cat << EOF
-Usage:
-	cn                              install chinese phala script | 中文安装
-	en                              install english phala script | 英文安装
-	help                            show install help information ｜ 展示帮助信息
-EOF
-exit 0
+	local language_num
+	while true ; do
+		cat $basedir/i18n/lang_list
+		read -n1 -p "Please select the language number you need 请选择需要的语言编号: " language_num
+		expr $language_num + 0 &> /dev/null
+		if [ $? -eq 0 ] ; then
+			lang_code=$(tail -n +$1 $basedir/i18n/lang_match | head -n 1)
+			cp $basedir/i18n/$lang_code $language_file
+			break
+		else
+			printf "ERROR. please re-enter 输入错误，请重新输入:\n"
+		fi
+	done
 }
 
-install_cn()
+choose_node()
 {
-	echo "--------------安装 phala 脚本程序-------------"
-
-	if [ -f /opt/phala/scripts/phala.sh ]; then
-		echo "删除旧的 Phala 脚本"
-		/opt/phala/scripts/phala.sh uninstall
-	fi
-	echo "安装新的 Phala 脚本"
-	if [ ! -f $installdir ]; then mkdir -p $installdir; fi
-	if [ -f $installdir/.env ]; then
-		cp $basedir/{docker-compose.yml,console.js} $installdir
-	else
-		cp $basedir/{.env,docker-compose.yml,console.js} $installdir
-	fi
-	cp -r $basedir/scripts/cn $installdir/scripts
-
-	echo "安装 Phala 命令行工具"
-	chmod +x $installdir/scripts/phala.sh
-	ln -s $installdir/scripts/phala.sh /usr/bin/phala
-	# sed -i '1c NODE_IMAGE=swr.cn-east-3.myhuaweicloud.com/phala/khala-dev-node' $installdir/.env
-	# sed -i '2c PRUNTIME_IMAGE=swr.cn-east-3.myhuaweicloud.com/phala/phala-dev-pruntime' $installdir/.env
-	# sed -i '3c PHERRY_IMAGE=swr.cn-east-3.myhuaweicloud.com/phala/phala-dev-pherry' $installdir/.env
-	# sed -i '4c NODE_VOLUMES=/var/phala-node-data:/root/data' $installdir/.env
-	# sed -i '5c PRUNTIME_VOLUMES=/var/phala-pruntime-data:/root/datas' $installdir/.env
-
-	echo "------------安装成功-------------"
+	while true ; do
+		sed -n '6,9p;10q' $language_file
+		read -n1 install_mode
+		expr $install_mode + 0 &> /dev/null
+		if [ $? -eq 0 ] && [ $install_mode -ge 1 ] && [ $install_mode -le 3 ]; then
+			break
+		else
+			sed -n '10,p;11q' $language_file
+		fi
 }
 
-install_en()
+install()
 {
-	echo "--------------Install phala scripts-------------"
+	sed -n '1,p;2q' $language_file
 
 	if [ -f /opt/phala/scripts/phala.sh ]; then
-		echo "Uninstall old phala scripts"
+		sed -n '2,p;3q' $language_file
 		/opt/phala/scripts/phala.sh uninstall
 	fi
-	echo "Install new phala scripts"
+	sed -n '3,p;4q' $language_file
 	if [ ! -f $installdir ]; then mkdir -p $installdir; fi
 	if [ -f $installdir/.env ]; then
-		cp $basedir/{docker-compose.yml,console.js} $installdir/
-	else
-		cp $basedir/{.env,docker-compose.yml,console.js} $installdir/
+		cp $basedir/.env $installdir
 	fi
-	cp -r $basedir/scripts/en $installdir/scripts
+	cp $basedir/console.js $installdir
+	cp $basedir/docker-compose.yml.$install_mode $installdir/docker-compose.yml
+	sed -i "16c MODE=$install_mode" $installdir/.env
 
-	echo "Install phala command line tool"
+	cp -r $basedir/scripts/ $installdir/scripts
+
+	cp $language_file $installdir/language
+
+	sed -n '4,p;5q' $language_file
 	chmod +x $installdir/scripts/phala.sh
 	ln -s $installdir/scripts/phala.sh /usr/bin/phala
-	# sed -i '1c NODE_IMAGE=phalanetwork/khala-dev-node' $installdir/.env
-	# sed -i '2c PRUNTIME_IMAGE=phalanetwork/phala-dev-pruntime' $installdir/.env
-	# sed -i '3c PHERRY_IMAGE=phalanetwork/phala-dev-pherry' $installdir/.env
-	# sed -i '4c NODE_VOLUMES=/var/phala-node-data:/root/data' $installdir/.env
-	# sed -i '5c PRUNTIME_VOLUMES=/var/phala-pruntime-data:/root/data' $installdir/.env
 
-	echo "------------Install success-------------"
+	sed -n '5,p;6q' $language_file
 }
 
 if [ $(id -u) -ne 0 ]; then
@@ -79,14 +70,10 @@ if [ $(id -u) -ne 0 ]; then
 	exit 1
 fi
 
-case "$1" in
-	"cn")
-		install_cn
-		;;
-	"en")
-		install_en
-		;;
-	*)
-		help
-		;;
-esac
+select_language
+if [ $? -eq 0 ]; then
+	choose_node
+	if [ $? -eq 0 ]; then
+		install
+	fi
+fi
