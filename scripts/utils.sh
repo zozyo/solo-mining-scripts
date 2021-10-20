@@ -7,17 +7,17 @@ function echo_c()
 
 function log_info()
 {
-	echo_c 33 "$1"
+	echo_c 33 "$*"
 }
 
 function log_success()
 {
-	echo_c 32 "$1"
+	echo_c 32 "$*"
 }
 
 function log_err()
 {
-	echo_c 35 "$1"
+	echo_c 35 "$*"
 }
 
 function check_docker_status()

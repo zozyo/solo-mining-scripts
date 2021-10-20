@@ -107,20 +107,20 @@ function version_gt() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" 
 function check_kernel()
 {
 	if version_gt $(uname -r|awk -F "-" '{print $1}') "5.10"; then
-		log_err $(sed -n '43,p;44q' $language_file)
+		log_err $(sed -n '43p;44q' $language_file)
 		exit 1
 	fi
 }
 
 function check_sgx()
 {
-	log_info $(sed -n '44,p;45q' $language_file)
+	log_info $(sed -n '44p;45q' $language_file)
 	local Level=$(phala sgx-test | awk '/confidenceLevel =/ {print $3 }' | tr -cd "[0-9]")
 	if [ -z $Level ]; then
-		log_err $(sed -n '45,p;46q' $language_file)
+		log_err $(sed -n '45p;46q' $language_file)
 		exit 1
 	elif [ $(echo "1 <= $Level" | bc) -eq 1 ] && [ $(echo "$Level <= 5" | bc) -eq 1 ]; then
-		log_info "$(sed -n '46,p;47q' $language_file)$Level"
+		log_info "$(sed -n '46p;47q' $language_file)$Level"
 	fi
 }
 
