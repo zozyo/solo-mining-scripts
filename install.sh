@@ -49,7 +49,7 @@ install()
 	fi
 	sed -n '3p;4q' $language_file
 	if [ ! -f $installdir ]; then mkdir -p $installdir; fi
-	if [ -f $installdir/.env ]; then
+	if [ ! -f $installdir/.env ]; then
 		cp $basedir/.env $installdir
 	fi
 	cp $basedir/console.js $installdir

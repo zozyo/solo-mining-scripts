@@ -262,7 +262,7 @@ function status_en()
 	done
 }
 
-fucnction status()
+function status()
 {
 	local lang_code=$(cat $installdir/.env | grep 'LANGCODE' | awk -F "=" '{print $NF}')
 	case $lang_code in
