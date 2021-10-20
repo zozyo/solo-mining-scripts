@@ -14,7 +14,7 @@ Options:
 	uninstall				卸载phala脚本
 	start					启动挖矿
 	stop					停止挖矿程序（必须选择一项）
-		<all>					停止所有容器
+		<all>				停止所有容器
 		<node>				停止phala-node容器
 		<pruntime>			停止phala-pruntime容器
 		<pherry>			停止phala-pherry容器
@@ -69,7 +69,7 @@ exit 0
 
 function phala_help()
 {
-	local lang_code=$(cat $installdir/.env | grep 'LANGCODE' | awk -F "=" '{print $NF}')
+	local lang_code=$(cat $installdir/.env | grep 'LANG_CODE' | awk -F "=" '{print $NF}')
 	case $lang_code in
 		"zh_cn")
 			phala_help_cn

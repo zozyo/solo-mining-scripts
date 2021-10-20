@@ -7,6 +7,8 @@ function uninstall()
 		if [ ! -z $(docker container ls -q -f "name=$container_name") ]; then
 			docker container stop $container_name
 			docker container rm --force $container_name
+		fi
+		if [ -z $(docker images -q $container_name) ]; then
 			case $container_name in
 				phala-node)
 					docker image rm $(awk -F "=" 'NR==1 {print $2}' $installdir/.env)

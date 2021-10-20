@@ -126,15 +126,13 @@ function check_sgx()
 
 function config()
 {
-	check_kernel
-
-	if [ $running_mode != "1" ]; then check_sgx; fi
-
 	case "$1" in
 		show)
 			config_show
 			;;
 		set)
+			check_kernel
+			if [ $running_mode != "1" ]; then check_sgx; fi
 			config_set_all
 			;;
 		*)

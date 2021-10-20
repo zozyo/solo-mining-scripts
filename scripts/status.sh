@@ -264,7 +264,7 @@ function status_en()
 
 function status()
 {
-	local lang_code=$(cat $installdir/.env | grep 'LANGCODE' | awk -F "=" '{print $NF}')
+	local lang_code=$(cat $installdir/.env | grep 'LANG_CODE' | awk -F "=" '{print $NF}')
 	case $lang_code in
 		"zh_cn")
 			status_cn
