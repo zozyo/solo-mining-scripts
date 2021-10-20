@@ -266,7 +266,7 @@ function status()
 {
 	local lang_code=$(cat $installdir/.env | grep 'LANGCODE' | awk -F "=" '{print $NF}')
 	case $lang_code in
-		zh_cn)
+		"zh_cn")
 			status_cn
 			;;
 		*)

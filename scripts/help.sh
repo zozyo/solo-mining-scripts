@@ -71,7 +71,7 @@ function phala_help()
 {
 	local lang_code=$(cat $installdir/.env | grep 'LANGCODE' | awk -F "=" '{print $NF}')
 	case $lang_code in
-		zh_cn)
+		"zh_cn")
 			phala_help_cn
 			;;
 		*)
