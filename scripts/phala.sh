@@ -5,8 +5,8 @@ scriptdir=$installdir/scripts
 language_file=$installdir/language
 running_mode=$(cat $installdir/.env | awk -F "=" 'NR==16 {print $NF}')
 detect_result=""
-khala-substrate-ws-endpoint="wss://khala.api.onfinality.io/public-ws"
-kusama-substrate-ws-endpoint="wss://pub.elara.patract.io/kusama"
+khala_substrate_ws_endpoint="wss://khala.api.onfinality.io/public-ws"
+kusama_substrate_ws_endpoint="wss://pub.elara.patract.io/kusama"
 
 source $scriptdir/utils.sh
 source $scriptdir/config.sh
