@@ -9,3 +9,53 @@ Please select the installation mode
 3. Both
 ERROR, please re-enter
 Please run with sudo!
+----------Apt update----------
+Apt update failed
+----------Install dependencies----------
+----------Failed to install dependencies, please to check install logs!----------
+----------Remove dcap/isgx driver----------
+----------Download driver----------
+----------Download dirver failed, try again!----------
+----------Give driver executable permission----------
+----------The driver was not successfully downloaded, please check your network!----------
+----------Installing driver----------
+----------Failed to install the driver, please check the driver installation logs!----------
+----------Delete temporary files----------
+----------Failed to install the DCAP and isgx driver, please check the driver installation logs!----------
+----------Your device exists: /dev/sgx/enclave /dev/sgx/provision /dev/sgx_enclave /dev/sgx_provision is related to the DCAP driver, all have been added to phala-pruntime!----------
+----------Your device exists: /dev/sgx/provision /dev/sgx_enclave /dev/sgx_provision is related to the DCAP driver, all have been added to phala-pruntime!----------
+----------Your device exists: /dev/sgx_enclave /dev/sgx_provision is related to the DCAP driver, all have been added to phala-pruntime!----------
+----------Your device exists: /dev/sgx_provision is related to the DCAP driver, all have been added to phala-pruntime!----------
+----------Your device exists: /dev/isgx is related to the isgx driver, all have been added to phala-pruntime!----------
+----------The DCAP/isgx driver file was not found, please check the driver installation logs!----------
+----------The system does not support, phala currently only supports Ubuntu 18.04/Ubuntu 20.04----------
+Enter your node name(not contain spaces):
+The node name cannot contain spaces, please re-enter!
+You use several cores to participate in mining:
+Please enter an integer greater than 1 and less than 32, and your enter is incorrect, please re-enter!
+Enter your gas account mnemonic:
+Please enter a legal mnemonic, and it cannot be empty!
+Account PHA is less than 0.1!
+Enter your pool address:
+Please enter a legal pool address, and it cannot be empty!
+Enter your node IP address:
+Please enter a legal node IP address, and it cannot be empty!
+----------Your kernel version is greater than 5.10, the kernel version is too high.Please lower the kernel version!----------
+----------Test confidenceLevel, waiting for Intel to issue IAS remote certification report!----------
+----------Intel IAS certification has not passed, please check your motherboard or network!----------
+Your confidenceLevel is:
+----------The miner is not configured, start configuring the node!----------
+----------Please reinstall driver!----------
+----------The node is not configured, start configuring the node!----------
+----------phala-node already stop----------
+----------phala-pruntime already stop----------
+----------phala-pherry already stop----------
+---------------Uninstall phala node sucess---------------
+----------Script download failed, download again!----------
+----------The local script version is too low and has been automatically upgraded. Please execute the command again!----------
+----------Update phala script----------
+----------Update success----------
+----------Clean phala node images----------
+Kill phala-node phala-pruntime phala-pherry khala-node
+----------Clean data----------
+----------Clean success----------

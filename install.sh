@@ -5,6 +5,7 @@ scriptdir=$basedir/scripts
 installdir=/opt/phala
 language_file=/tmp/language
 install_mode="0"
+lang_code="en_us"
 
 select_language()
 {
@@ -52,6 +53,7 @@ install()
 	cp $basedir/console.js $installdir
 	cp $basedir/docker-compose.yml.$install_mode $installdir/docker-compose.yml
 	sed -i "16c MODE=$install_mode" $installdir/.env
+	sed -i "18c LANG_CODE=$lang_code" $installdir/.env
 
 	cp -r $basedir/scripts/ $installdir/scripts
 
