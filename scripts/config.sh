@@ -9,9 +9,9 @@ function config_set_node()
 {
 	local node_name
 	while true ; do
-		read -p $(sed -n '32,p;33q' $language_file) node_name
+		read -p $(sed -n '32p;33q' $language_file) node_name
 		if [[ $node_name =~ \ |\' ]]; then
-			log_err $(sed -n '33,p;34q' $language_file)
+			log_err $(sed -n '33p;34q' $language_file)
 		else
 			sed -i "7c NODE_NAME=$node_name" $installdir/.env
 			break
@@ -23,13 +23,13 @@ function config_set_worker()
 {
 	local cores
 	while true ; do
-		read -p $(sed -n '34,p;35q' $language_file) cores
+		read -p $(sed -n '34p;35q' $language_file) cores
 		expr $cores + 0 &> /dev/null
 		if [ $? -eq 0 ] && [ $cores -ge 1 ] && [ $cores -le 32 ]; then
 			sed -i "6c CORES=$cores" $installdir/.env
 			break
 		else
-			log_err $(sed -n '35,p;36q' $language_file)
+			log_err $(sed -n '35p;36q' $language_file)
 		fi
 	done
 
@@ -37,9 +37,9 @@ function config_set_worker()
 	local gas_adress=""
 	local balance=""
 	while true ; do
-		read -p $(sed -n '36,p;37q' $language_file) mnemonic
+		read -p $(sed -n '36p;37q' $language_file) mnemonic
 		if [ -z "$mnemonic" ] || [ $(node $installdir/console.js utils verify "$mnemonic") == "Cannot decode the input" ]; then
-			log_err $(sed -n '37,p;38q' $language_file)
+			log_err $(sed -n '37p;38q' $language_file)
 		else
 			gas_adress=$(node $installdir/console.js utils verify "$mnemonic")
 			balance=$(node $installdir/console.js --substrate-ws-endpoint "wss://khala-api.phala.network/ws" chain free-balance $gas_adress 2>&1)
@@ -57,9 +57,9 @@ function config_set_worker()
 
 	local pool_addr=""
 	while true ; do
-		read -p $(sed -n '39,p;40q' $language_file) pool_addr
+		read -p $(sed -n '39p;40q' $language_file) pool_addr
 		if [ -z "$pool_addr" ] || [ $(node $installdir/console.js utils verify "$pool_addr") == "Cannot decode the input" ]; then
-			log_err $(sed -n '40,p;41q' $language_file)
+			log_err $(sed -n '40p;41q' $language_file)
 		else
 			sed -i "10c OPERATOR=$pool_addr" $installdir/.env
 			break
@@ -71,10 +71,10 @@ function config_set_node_address()
 {
 	local node_ip_address=""
 	while true ; do
-		read -p $(sed -n '41,p;42q' $language_file) node_ip_address
+		read -p $(sed -n '41p;42q' $language_file) node_ip_address
 		nc -z -w 5 $node_ip_address 9944 2>/dev/null
 		if [ $? -ne 0 ]; then
-			log_err $(sed -n '42,p;43q' $language_file)
+			log_err $(sed -n '42p;43q' $language_file)
 		else
 			sed -i "17c NODE_ADDRESS=$node_ip_address" $installdir/.env
 			break

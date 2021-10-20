@@ -2,14 +2,14 @@
 
 function install_depenencies()
 {
-	log_info $(sed -n '12,p;13q' $language_file)
+	log_info $(sed -n '12p;13q' $language_file)
 	apt-get update
 	if [ $? -ne 0 ]; then
-		log_err $(sed -n '13,p;14q' $language_file)
+		log_err $(sed -n '13p;14q' $language_file)
 		exit 1
 	fi
 
-	log_info $(sed -n '14,p;15q' $language_file)
+	log_info $(sed -n '14p;15q' $language_file)
 	for i in `seq 0 4`; do
 		for package in jq curl wget unzip zip docker docker-compose node yq dkms; do
 			if ! type $package > /dev/null; then
@@ -45,7 +45,7 @@ function install_depenencies()
 		if type jq curl wget unzip zip docker docker-compose node yq dkms > /dev/null; then
 			break
 		else
-			log_err $(sed -n '15,p;16q' $language_file)
+			log_err $(sed -n '15p;16q' $language_file)
 			exit 1
 		fi
 	done
@@ -54,38 +54,38 @@ function install_depenencies()
 function remove_driver()
 {
 	if [ -f /opt/intel/sgxdriver/uninstall.sh ]; then
-		log_info $(sed -n '16,p;17q' $language_file)
+		log_info $(sed -n '16p;17q' $language_file)
 		/opt/intel/sgxdriver/uninstall.sh
 	fi
 }
 
 function install_progress()
 {
-	log_info $(sed -n '17,p;18q' $language_file)
+	log_info $(sed -n '17p;18q' $language_file)
 	for i in `seq 0 4`; do
 		wget $1 -O /tmp/$2
 		if [ $? -ne 0 ]; then
-			log_err $(sed -n '18,p;19q' $language_file)
+			log_err $(sed -n '18p;19q' $language_file)
 		else
 			break
 		fi
 	done
 
 	if [ -f /tmp/$2 ]; then
-		log_info $(sed -n '19,p;20q' $language_file)
+		log_info $(sed -n '19p;20q' $language_file)
 		chmod +x /tmp/$2
 	else
-		log_err $(sed -n '20,p;21q' $language_file)
+		log_err $(sed -n '20p;21q' $language_file)
 		exit 1
 	fi
 
-	log_info $(sed -n '21,p;22q' $language_file)
+	log_info $(sed -n '21p;22q' $language_file)
 	/tmp/$2
 	if [ $? -ne 0 ]; then
-		log_err $(sed -n '22,p;23q' $language_file)
+		log_err $(sed -n '22p;23q' $language_file)
 		exit 1
 	else
-		log_success $(sed -n '23,p;24q' $language_file)
+		log_success $(sed -n '23p;24q' $language_file)
 		rm /tmp/$2
 	fi
 
@@ -99,7 +99,7 @@ function install_driver()
 	if [ $? -ne 0 ]; then
 		install_progress $isgx_driverurl $isgx_driverbin
 		if [ $? -ne 0 ]; then
-			log_err $(sed -n '24,p;25q' $language_file)
+			log_err $(sed -n '24p;25q' $language_file)
 			exit 1
 		fi
 	fi
@@ -110,27 +110,27 @@ function write_pruntime_devices()
 	detect_driver
 	case "$detect_result" in
 		11110)
-			log_info $(sed -n '25,p;26q' $language_file)
+			log_info $(sed -n '25p;26q' $language_file)
 			yq e -i '.services.phala-pruntime.devices = ["/dev/sgx/enclave","/dev/sgx/provision","/dev/sgx_enclave","/dev/sgx_provision"]' $installdir/docker-compose.yml
 		;;
 		01110)
-			log_info $(sed -n '26,p;27q' $language_file)
+			log_info $(sed -n '26p;27q' $language_file)
 			yq e -i '.services.phala-pruntime.devices = ["/dev/sgx/provision","/dev/sgx_enclave","/dev/sgx_provision"]' $installdir/docker-compose.yml
 			;;
 		00110)
-			log_info $(sed -n '27,p;28q' $language_file)
+			log_info $(sed -n '27p;28q' $language_file)
 			yq e -i '.services.phala-pruntime.devices = ["/dev/sgx_enclave","/dev/sgx_provision"]' $installdir/docker-compose.yml
 			;;
 		00010)
-			log_info $(sed -n '28,p;29q' $language_file)
+			log_info $(sed -n '28p;29q' $language_file)
 			yq e -i '.services.phala-pruntime.devices = ["/dev/sgx_provision"]' $installdir/docker-compose.yml
 			;;
 		00001)
-			log_info $(sed -n '29,p;30q' $language_file)
+			log_info $(sed -n '29p;30q' $language_file)
 			yq e -i '.services.phala-pruntime.devices = ["/dev/isgx"]' $installdir/docker-compose.yml
 			;;
 		*)
-			log_info $(sed -n '30,p;31q' $language_file)
+			log_info $(sed -n '30p;31q' $language_file)
 			exit 1
 			;;
 	esac
@@ -173,6 +173,6 @@ elif [ $(lsb_release -r | grep -o "[0-9]*\.[0-9]*") = "20.04" ]; then
 	isgx_driverurl=$(awk -F '=' 'NR==14 {print $2}' $installdir/.env)
 	isgx_driverbin=$(awk -F '/' 'NR==14 {print $NF}' $installdir/.env)
 else
-	log_err $(sed -n '31,p;32q' $language_file)
+	log_err $(sed -n '31p;32q' $language_file)
 	exit 1
 fi

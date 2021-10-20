@@ -6,7 +6,7 @@ function download_script()
 	for i in `seq 0 4`; do
 		wget https://github.com/Phala-Network/solo-mining-scripts/archive/main.zip -O /tmp/main.zip &> /dev/null
 		if [ $? -ne 0 ]; then
-			log_err $(sed -n '54,p;55q' $language_file)
+			log_err $(sed -n '54p;55q' $language_file)
 		else
 			break
 		fi
@@ -23,7 +23,7 @@ function check_version()
 		cp -r /tmp/phala/solo-mining-scripts-main/docker-compose.yml.$running_mode /opt/phala
 		chmod +x /opt/phala/scripts/phala.sh
 		ln -s /opt/phala/scripts/phala.sh /usr/bin/phala
-		log_info $(sed -n '55,p;56q' $language_file)
+		log_info $(sed -n '55p;56q' $language_file)
 		sed -i "15c version=$(cat /tmp/phala/solo-mining-scripts-main/.env | awk -F "=" 'NR==15 {print $NF}')" $installdir/.env
 		exit 1
 	fi
@@ -32,21 +32,21 @@ function check_version()
 
 function update_script()
 {
-	log_info $(sed -n '56,p;57q' $language_file)
+	log_info $(sed -n '56p;57q' $language_file)
 	download_script
 	rm -rf /opt/phala/scripts /usr/bin/phala
 	cp -r /tmp/phala/solo-mining-scripts-main/scripts/ /opt/phala/scripts
 	cp -r /tmp/phala/solo-mining-scripts-main/docker-compose.yml /opt/phala
 	chmod +x /opt/phala/scripts/phala.sh
 	ln -s /opt/phala/scripts/phala.sh /usr/bin/phala
-	log_success $(sed -n '57,p;58q' $language_file)
+	log_success $(sed -n '57p;58q' $language_file)
 	sed -i "15c version=$(cat /tmp/phala/solo-mining-scripts-main/.env | awk -F "=" 'NR==15 {print $NF}')" $installdir/.env
 	rm -rf /tmp/phala /tmp/main.zip
 }
 
 function update_docker()
 {
-	log_info $(sed -n '58,p;59q' $language_file)
+	log_info $(sed -n '58p;59q' $language_file)
 	for container_name in phala-node phala-pruntime phala-pherry phala-sgx_detect
 	do
 		if [ ! -z $(docker container ls -q -f "name=$container_name") ]; then
@@ -71,16 +71,16 @@ function update_docker()
 	done
 
 	if [ $1 = "clean" ]; then
-		log_info $(sed -n '60,p;61q' $language_file)
+		log_info $(sed -n '60p;61q' $language_file)
 		local node_dir=$(awk -F '[=:]' 'NR==4 {print $2}' $installdir/.env)
 		if [ -d $node_dir ]; then rm -rf $node_dir;fi
 		local pruntime_dir=$(awk -F '[=:]' 'NR==5 {print $2}' $installdir/.env)
 		if [ -d $pruntime_dir ]; then rm -rf $pruntime_dir;fi
-		log_success $(sed -n '61,p;62q' $language_file)
+		log_success $(sed -n '61p;62q' $language_file)
 	fi
 
 	start
-	log_success $(sed -n '57,p;58q' $language_file)
+	log_success $(sed -n '57p;58q' $language_file)
 }
 
 function update()

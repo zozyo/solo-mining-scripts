@@ -15,13 +15,14 @@ select_language()
 		read -n1 -p "Please select the language number you need 请选择需要的语言编号: " language_num
 		expr $language_num + 0 &> /dev/null
 		if [ $? -eq 0 ] ; then
-			lang_code=$(tail -n +$1 $basedir/i18n/lang_match | head -n 1)
+			lang_code=$(tail -n +$language_num $basedir/i18n/lang_match | head -n 1)
 			cp $basedir/i18n/$lang_code $language_file
 			break
 		else
 			printf "ERROR. please re-enter 输入错误，请重新输入:\n"
 		fi
 	done
+	echo
 }
 
 choose_node()
@@ -33,19 +34,20 @@ choose_node()
 		if [ $? -eq 0 ] && [ $install_mode -ge 1 ] && [ $install_mode -le 3 ]; then
 			break
 		else
-			sed -n '10,p;11q' $language_file
+			sed -n '10p;11q' $language_file
 		fi
+	done
 }
 
 install()
 {
-	sed -n '1,p;2q' $language_file
+	sed -n '1p;2q' $language_file
 
 	if [ -f /opt/phala/scripts/phala.sh ]; then
-		sed -n '2,p;3q' $language_file
+		sed -n '2p;3q' $language_file
 		/opt/phala/scripts/phala.sh uninstall
 	fi
-	sed -n '3,p;4q' $language_file
+	sed -n '3p;4q' $language_file
 	if [ ! -f $installdir ]; then mkdir -p $installdir; fi
 	if [ -f $installdir/.env ]; then
 		cp $basedir/.env $installdir
@@ -59,11 +61,11 @@ install()
 
 	cp $language_file $installdir/language
 
-	sed -n '4,p;5q' $language_file
+	sed -n '4p;5q' $language_file
 	chmod +x $installdir/scripts/phala.sh
 	ln -s $installdir/scripts/phala.sh /usr/bin/phala
 
-	sed -n '5,p;6q' $language_file
+	sed -n '5p;6q' $language_file
 }
 
 if [ $(id -u) -ne 0 ]; then

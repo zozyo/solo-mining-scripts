@@ -14,18 +14,18 @@ function start()
 		local mnemonic=$(cat $installdir/.env | grep 'MNEMONIC' | awk -F "=" '{print $NF}')
 		local pool_address=$(cat $installdir/.env | grep 'OPERATOR' | awk -F "=" '{print $NF}')
 		if [ -z "$cores" ]||[ -z "$mnemonic" ]||[ -z "$pool_address" ]; then
-			log_err $(sed -n '47,p;48q' $language_file)
+			log_err $(sed -n '47p;48q' $language_file)
 			config set
 		fi
 
 		local pruntime_devices=$(cat $installdir/docker-compose.yml | grep 'sgx')
 		if [ -z "$pruntime_devices" ]; then
-			log_err $(sed -n '48,p;49q' $language_file)
+			log_err $(sed -n '48p;49q' $language_file)
 		fi
 	else
 		local node_name=$(cat $installdir/.env | grep 'NODE_NAME' | awk -F "=" '{print $NF}')
 		if [ -z "$node_name" ]; then
-			log_err $(sed -n '49,p;50q' $language_file)
+			log_err $(sed -n '49p;50q' $language_file)
 			config set
 		fi
 	fi

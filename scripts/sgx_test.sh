@@ -25,7 +25,7 @@ function sgx_test()
 			docker run -ti --rm --name phala-sgx_detect --device /dev/isgx $sgx_detect_image
 			;;
 		*)
-			log_info $(sed -n '30,p;31q' $language_file)
+			log_info $(sed -n '30p;31q' $language_file)
 			exit 1
 			;;
 	esac

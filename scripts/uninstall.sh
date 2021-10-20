@@ -31,5 +31,5 @@ function uninstall()
 	rm -rf $installdir/{scripts,docker-compose.yml,console.js}
 	rm /usr/bin/phala
 
-	log_success $(sed -n '53,p;54q' $language_file)
+	log_success $(sed -n '53p;54q' $language_file)
 }

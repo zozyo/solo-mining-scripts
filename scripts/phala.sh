@@ -19,7 +19,7 @@ source $scriptdir/help.sh
 source $scriptdir/sgx_test.sh
 
 if [ $(id -u) -ne 0 ]; then
-	sed -n '11,p;12q' $language_file
+	sed -n '11p;12q' $language_file
 	exit 1
 fi
 
