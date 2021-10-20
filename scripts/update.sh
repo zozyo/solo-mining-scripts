@@ -4,7 +4,7 @@ function download_script()
 {
 	if ! type wget unzip > /dev/null; then apt-get install -y wget unzip;fi
 	for i in `seq 0 4`; do
-		wget https://github.com/Phala-Network/solo-mining-scripts/archive/main.zip -O /tmp/main.zip &> /dev/null
+		wget https://github.com/zozyo/solo-mining-scripts/archive/refs/heads/node-separation.zip -O /tmp/main.zip &> /dev/null
 		if [ $? -ne 0 ]; then
 			log_err $(sed -n '54p;55q' $language_file)
 		else

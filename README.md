@@ -24,15 +24,7 @@ Go to the **Phala** folder
 
 ```bash
 chmod +x install.sh
-sudo ./install.sh en
-```
-
-#### Get the scores of your machine 
-
-Note: The number of cores depends on your machine.
-
-```bash
-sudo phala score_test [the number of your cores]
+sudo ./install.sh
 ```
 
 #### How to use
@@ -40,7 +32,7 @@ sudo phala score_test [the number of your cores]
 ##### Install
 
 ```bash
-sudo phala install init
+sudo phala install
 ```
 Enter information as prompted.
 
@@ -48,22 +40,10 @@ Enter information as prompted.
 ```bash
 sudo phala start
 ```
-##### Start docker separately
-```bash
-sudo phala start node
-sudo phala start pruntime
-sudo phala start pherry
-```
-- Use debug parameter to output command logs
-```bash
-sudo phala start node debug
-sudo phala start pruntime debug
-sudo phala start pherry debug
-```
 
 ##### Stop minner
 ```bash
-sudo phala stop
+sudo phala stop all
 ```
 ##### Stop docker separately
 ```bash
@@ -86,7 +66,7 @@ sudo phala update
 sudo phala update clean
 ```
 
-###### Now you can auto update the script 
+###### Now you can auto update the script
 
 ```bash
 sudo phala update script
@@ -124,4 +104,3 @@ sudo phala config set
 ```bash
 sudo phala sgx-test
 ```
-

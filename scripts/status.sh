@@ -262,15 +262,84 @@ function status_en()
 	done
 }
 
+function status_node()
+{
+	trap "clear;exit" 2
+	while true; do
+		local node_status="stop"
+		local node_name=$(cat $installdir/.env | grep 'NODE_NAME' | awk -F "=" '{print $NF}')
+		local script_version=$(cat $installdir/.env | grep 'version' | awk -F "=" '{print $NF}')
+		local khala_head_block=$(node $installdir/console.js --substrate-ws-endpoint "wss://khala.api.onfinality.io/public-ws" chain sync-state 2>/dev/null)
+		khala_head_block=$(echo $khala_head_block | awk -F "," '{print $5}' | sed 's/ currentBlock: //g')
+		local khala_node_block=$(curl -sH "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "system_syncState", "params":[]}' http://0.0.0.0:9933 | jq '.result.currentBlock')
+		local kusama_head_block=$(node $installdir/console.js --substrate-ws-endpoint "wss://pub.elara.patract.io/kusama" chain sync-state | awk -F " " '/currentBlock/ {print $NF}' | sed 's/,//g')
+		local kusama_node_block=$(curl -sH "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "system_syncState", "params":[]}' http://0.0.0.0:9934 | jq '.result.currentBlock')
+
+		check_docker_status phala-node
+		local res=$?
+		if [ $res -eq 0 ]; then
+			node_status="running"
+		elif [ $res -eq 2 ]; then
+			node_status="exited"
+		fi
+
+		SYNCED="Synchronization completed"
+		SYNCING="Synchronizing, please wait"
+
+		blockInfo=(${khala_node_block} ${khala_head_block} ${kusama_node_block} ${kusama_head_block})
+		compareOrder1=(1 3)
+		compareOrder2=(0 2)
+
+		for i in `seq 0 1`; do
+			compare[${i}]=$(echo "${blockInfo[${compareOrder1[${i}]}]} - ${blockInfo[${compareOrder2[${i}]}]}")
+			diff[${i}]=$(echo ${compare[${i}]} | bc)
+			if [[ ${diff[${i}]} -lt 2 ]]; then
+				sync_status[${i}]=${SYNCED}
+			else
+				sync_status[${i}]=${SYNCING}
+			fi
+		done
+
+		clear
+		printf "
+------------------------------ Script version ${script_version} ----------------------------
+	service name		service status		local/public node block height
+--------------------------------------------------------------------------
+	khala-node		${node_status}			${khala_node_block} / ${khala_head_block}
+	kusama-node		${node_status}			${kusama_node_block} / ${kusama_head_block}
+--------------------------------------------------------------------------
+	Status check						result
+--------------------------------------------------------------------------
+	khala chain synchronization status		${sync_status[0]}, difference is ${diff[0]}
+	kusama chain synchronization status		${sync_status[1]}, difference is ${diff[1]}
+--------------------------------------------------------------------------
+	account information		content
+--------------------------------------------------------------------------
+	node name           		${node_name}
+--------------------------------------------------------------------------
+"
+
+		for i in `seq 60 -1 0`; do
+			echo -ne "----------------------  Remaining ${i}s refresh   --------------------------\r"
+			sleep 1
+		done
+		printf "\n Refreshing..."
+	done
+}
+
 function status()
 {
-	local lang_code=$(cat $installdir/.env | grep 'LANG_CODE' | awk -F "=" '{print $NF}')
-	case $lang_code in
-		"zh_cn")
-			status_cn
-			;;
-		*)
-			status_en
-			;;
-	esac
+	if [ $running_mode = "3" ]; then
+		local lang_code=$(cat $installdir/.env | grep 'LANG_CODE' | awk -F "=" '{print $NF}')
+		case $lang_code in
+			"zh_cn")
+				status_cn
+				;;
+			*)
+				status_en
+				;;
+		esac
+	else
+		status_node
+	fi
 }
