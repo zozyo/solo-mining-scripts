@@ -2,8 +2,6 @@
 
 function sgx_test()
 {
-	local sgx_detect_image="swr.cn-east-3.myhuaweicloud.com/phala/phala-sgx_detect:latest"
-
 	if ! type jq curl wget unzip zip docker docker-compose node yq dkms > /dev/null; then install_depenencies;fi
 	detect_driver
 	if [ $detect_result = "00000" ]; then install_driver;fi

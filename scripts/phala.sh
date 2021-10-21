@@ -1,13 +1,8 @@
 #!/bin/bash
 
-installdir=/opt/phala
 scriptdir=$installdir/scripts
-language_file=$installdir/language
-running_mode=$(cat $installdir/.env | awk -F "=" 'NR==16 {print $NF}')
-detect_result=""
-khala_substrate_ws_endpoint="wss://khala.api.onfinality.io/public-ws"
-kusama_substrate_ws_endpoint="wss://pub.elara.patract.io/kusama"
 
+source $scriptdir/variables.sh
 source $scriptdir/utils.sh
 source $scriptdir/config.sh
 source $scriptdir/install_phala.sh

@@ -19,20 +19,20 @@ function install_depenencies()
 						;;
 					docker)
 						curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-						add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+						add-apt-repository "$docker_mirror"
 						apt-get install -y docker-ce docker-ce-cli containerd.io
 						usermod -aG docker $USER
 						;;
 					docker-compose)
-						curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+						curl -L "$docker_compose_url" -o /usr/local/bin/docker-compose
 						chmod +x /usr/local/bin/docker-compose
 						;;
 					node)
-						curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+						curl -fsSL "$node_url" | sudo -E bash -
 						apt-get install -y nodejs
 						;;
 					yq)
-						wget https://github.com/mikefarah/yq/releases/download/v4.11.2/yq_linux_amd64.tar.gz -O /tmp/yq_linux_amd64.tar.gz
+						wget $yq_url -O /tmp/yq_linux_amd64.tar.gz
 						tar -xvf /tmp/yq_linux_amd64.tar.gz -C /tmp
 						mv /tmp/yq_linux_amd64 /usr/bin/yq
 						rm /tmp/yq_linux_amd64.tar.gz

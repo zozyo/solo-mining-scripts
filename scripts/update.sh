@@ -4,7 +4,7 @@ function download_script()
 {
 	if ! type wget unzip > /dev/null; then apt-get install -y wget unzip;fi
 	for i in `seq 0 4`; do
-		wget https://github.com/zozyo/solo-mining-scripts/archive/refs/heads/node-separation.zip -O /tmp/main.zip &> /dev/null
+		wget $script_url -O /tmp/main.zip &> /dev/null
 		if [ $? -ne 0 ]; then
 			log_err $(sed -n '54p;55q' $language_file)
 		else
@@ -18,11 +18,11 @@ function check_version()
 {
 	download_script
 	if [ "$(cat $installdir/.env | awk -F "=" 'NR==15 {print $NF}')" != "$(cat /tmp/phala/solo-mining-scripts-main/.env | awk -F "=" 'NR==15 {print $NF}')" ]&&[ -d /tmp/phala ]; then
-		rm -rf /opt/phala/scripts /usr/bin/phala
-		cp -r /tmp/phala/solo-mining-scripts-main/scripts/ /opt/phala/scripts
-		cp -r /tmp/phala/solo-mining-scripts-main/docker-compose.yml.$running_mode /opt/phala
-		chmod +x /opt/phala/scripts/phala.sh
-		ln -s /opt/phala/scripts/phala.sh /usr/bin/phala
+		rm -rf $installdir/scripts /usr/bin/phala
+		cp -r /tmp/phala/solo-mining-scripts-main/scripts/ $installdir/scripts
+		cp -r /tmp/phala/solo-mining-scripts-main/docker-compose.yml.$running_mode $installdir
+		chmod +x $installdir/scripts/phala.sh
+		ln -s $installdir/scripts/phala.sh /usr/bin/phala
 		log_info $(sed -n '55p;56q' $language_file)
 		sed -i "15c version=$(cat /tmp/phala/solo-mining-scripts-main/.env | awk -F "=" 'NR==15 {print $NF}')" $installdir/.env
 		exit 1
@@ -34,11 +34,11 @@ function update_script()
 {
 	log_info $(sed -n '56p;57q' $language_file)
 	download_script
-	rm -rf /opt/phala/scripts /usr/bin/phala
-	cp -r /tmp/phala/solo-mining-scripts-main/scripts/ /opt/phala/scripts
-	cp -r /tmp/phala/solo-mining-scripts-main/docker-compose.yml /opt/phala
-	chmod +x /opt/phala/scripts/phala.sh
-	ln -s /opt/phala/scripts/phala.sh /usr/bin/phala
+	rm -rf $installdir/scripts /usr/bin/phala
+	cp -r /tmp/phala/solo-mining-scripts-main/scripts/ $installdir/scripts
+	cp -r /tmp/phala/solo-mining-scripts-main/docker-compose.yml $installdir
+	chmod +x $installdir/scripts/phala.sh
+	ln -s $installdir/scripts/phala.sh /usr/bin/phala
 	log_success $(sed -n '57p;58q' $language_file)
 	sed -i "15c version=$(cat /tmp/phala/solo-mining-scripts-main/.env | awk -F "=" 'NR==15 {print $NF}')" $installdir/.env
 	rm -rf /tmp/phala /tmp/main.zip

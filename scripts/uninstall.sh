@@ -22,7 +22,7 @@ function uninstall()
 					docker image rm $(awk -F "=" 'NR==3 {print $2}' $installdir/.env)
 					;;
 				phala-sgx_detect)
-					docker image rm swr.cn-east-3.myhuaweicloud.com/phala/phala-sgx_detect:latest
+					docker image rm $sgx_detect_image
 					;;
 				*)
 					break

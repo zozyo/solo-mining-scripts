@@ -42,7 +42,7 @@ function config_set_worker()
 			log_err $(sed -n '37p;38q' $language_file)
 		else
 			gas_adress=$(node $installdir/console.js utils verify "$mnemonic")
-			balance=$(node $installdir/console.js --substrate-ws-endpoint "wss://khala-api.phala.network/ws" chain free-balance $gas_adress 2>&1)
+			balance=$(node $installdir/console.js --substrate-ws-endpoint $khala_substrate_ws_endpoint chain free-balance $gas_adress 2>&1)
 			balance=$(echo $balance | awk -F " " '{print $NF}')
 			balance=$(echo "$balance / 1000000000000"|bc)
 			if [ $(echo "$balance > 0.1"|bc) -eq 1 ]; then
