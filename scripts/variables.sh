@@ -4,6 +4,8 @@ installdir=/opt/phala
 language_file=$installdir/language
 running_mode=$(cat $installdir/.env | awk -F "=" 'NR==16 {print $NF}')
 detect_result=""
+
+### URLS ###
 khala_substrate_ws_endpoint="wss://khala.api.onfinality.io/public-ws"
 kusama_substrate_ws_endpoint="wss://pub.elara.patract.io/kusama"
 sgx_detect_image="swr.cn-east-3.myhuaweicloud.com/phala/phala-sgx_detect:latest"
