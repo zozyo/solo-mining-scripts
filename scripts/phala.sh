@@ -1,5 +1,5 @@
 #!/bin/bash
-
+installdir=/opt/phala
 scriptdir=$installdir/scripts
 
 source $scriptdir/variables.sh
