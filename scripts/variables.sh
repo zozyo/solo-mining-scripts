@@ -1,6 +1,5 @@
 #!/bin/bash
 
-installdir=/opt/phala
 language_file=$installdir/language
 running_mode=$(cat $installdir/.env | awk -F "=" 'NR==16 {print $NF}')
 detect_result=""
